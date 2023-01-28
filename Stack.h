@@ -91,9 +91,6 @@ public:
     void CopyToFile(const char* path) const;
     void CopyBackwardToFile(const char* path) const;
 
-
-    T ComplexEvaluate() const;
-
 };
 
 

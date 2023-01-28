@@ -282,43 +282,4 @@ void Stack<T, Container>::CopyBackwardToFile(const char* path) const {
     }
 }
 
-template<typename T, class Container>
-T Stack<T, Container>::ComplexEvaluate() const {
-    if (Empty()) {
-        return Complex();
-    }
-    Complex result = *Begin();
-    for (StackIterator it = Begin() + 1; it != End(); ++it) {
-        if ((*(it - 1)).CRefOp()->ClassName() == "Plus") {
-            result.RefRegular() += (*it).CRefRegular();
-            result.RefImaginary() += (*it).CRefImaginary();
-        } else if ((*(it - 1)).CRefOp()->ClassName() == "Minus") {
-            result.RefRegular() -= (*it).CRefRegular();
-            result.RefImaginary() -= (*it).CRefImaginary();
-        } else if ((*(it - 1)).CRefOp()->ClassName() == "Mul") {
-            result.RefRegular() = (*(it - 1)).CRefRegular() *
-                    (*it).CRefRegular() -
-                    (*(it - 1)).CRefImaginary() * (*it).CRefImaginary();
-            result.RefImaginary() = (*(it - 1)).CRefRegular() *
-                    (*it).CRefImaginary() +
-                    (*(it - 1)).CRefImaginary() * (*it).CRefRegular();
-        } else if ((*(it - 1)).CRefOp()->ClassName() == "Div") {
-            result.RefRegular() = ((*(it - 1)).CRefRegular() *
-                    (*it).CRefRegular() +
-                    (*(it - 1)).CRefImaginary() * (*it).CRefImaginary()) /
-                    ((*it).CRefRegular() * (*it).CRefRegular() +
-                    (*it).CRefImaginary() * (*it).CRefImaginary());
-            result.RefImaginary() = ((*it).CRefRegular() *
-                    (*(it - 1)).CRefImaginary() -
-                    (*(it - 1)).CRefRegular() * (*it).CRefImaginary()) /
-                            ((*it).CRefRegular() * (*it).CRefRegular() +
-                            (*it).CRefImaginary() * (*it).CRefImaginary());
-        } else {
-            break;
-        }
-    }
-    result.RefOp() = new Equal();
-    return result;
-}
-
 
